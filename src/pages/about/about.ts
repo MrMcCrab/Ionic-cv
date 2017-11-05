@@ -5,20 +5,15 @@ import { IonicPage, NavController, NavParams, Nav, App } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 
-@IonicPage({name: 'home-page'})
+@IonicPage({name: 'about-page'})
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-about',
+  templateUrl: 'about.html',
 })
-export class HomePage {
+export class AboutPage {
 
-  username = '';
-  email = '';
+  constructor(public nav: NavController, public navParams: NavParams, private auth: AuthServiceProvider, public app: App) {
 
-  constructor(private nav: NavController, private auth: AuthServiceProvider, private app: App) {
-    let info = this.auth.getUserInfo();
-    this.username = info['name'];
-    this.email = info['email'];
   }
 
   public logout() {
@@ -26,4 +21,9 @@ export class HomePage {
       this.app.getRootNav().setRoot('login-page') //hide tabs after logout
     });
   }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad AboutPage');
+  }
+
 }
