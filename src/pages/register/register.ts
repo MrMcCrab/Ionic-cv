@@ -1,8 +1,11 @@
 //Juuso Heinonen 1600400
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, AlertController, NavController, NavParams } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { FirebaseProvider } from './../../providers/firebase/firebase';
+
+
 
 @IonicPage({name: 'register-page'})
 @Component({
@@ -10,41 +13,34 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
   templateUrl: 'register.html',
 })
 export class RegisterPage {
-  createSuccess = false;
-  registerCredentials = {email: '', password: ''};
 
-  constructor(private nav: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController) {
+  @ViewChild('email') email;
+  @ViewChild('password') password;
+
+  constructor(private nav: NavController, private fireAuth: AngularFireAuth, private alertCtrl: AlertController) {
   }
 
-  public register(){
-    this.auth.register(this.registerCredentials).subscribe(success => {
-      if (success){
-        this.createSuccess = true;
-        this.showPopup("Success", "Account created");
-      }else{
-        this.showPopup("Error", "Problem creating account");
-      }
-    },
-      error => {
-        this.showPopup("Error", error);
-      });
-  }
-
-  showPopup(title, text){
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: text,
-      buttons: [{
-        text: 'OK',
-        handler: data => {
-          if (this.createSuccess){
-            this.nav.popToRoot();
-          }
-        }
-      }]
+  // Register a new user and add it to Firebase users list
+  public register() {
+    this.fireAuth.auth.createUserWithEmailAndPassword(this.email.value, this.password.value)
+    .then(data => {
+      this.alert('You have registered!');
+      this.nav.setRoot( 'login-page' );
+    })
+    .catch(error => {
+      this.alert(error.message);
     });
-    alert.present();
   }
+
+  // Used to send alerts to user
+  alert(message: string) {
+    this.alertCtrl.create({
+      title: 'Info!',
+      subTitle: message,
+      buttons: ['OK']
+    }).present();
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterPage');

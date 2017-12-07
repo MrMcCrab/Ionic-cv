@@ -1,9 +1,10 @@
 //Juuso Heinonen 1600400
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, AlertController, NavController, Loading, LoadingController, NavParams } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { Http } from '@angular/http';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { FirebaseProvider } from './../../providers/firebase/firebase';
 
 
 @IonicPage({name: 'login-page'})
@@ -12,41 +13,45 @@ import { Http } from '@angular/http';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  loading: Loading;
-  registerCredentials = {email: '', password: ''};
 
-  constructor(private nav: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  @ViewChild('email') email;
+  @ViewChild('password') password;
+
+  constructor(private nav: NavController, private fireAuth: AngularFireAuth, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public firebase: FirebaseProvider) {
   }
+
 
   public createAccount(){
     this.nav.push('register-page');
   }
 
-  public login(){
-    this.showLoading()
-    this.auth.login(this.registerCredentials).subscribe(allowed => {
-      if(allowed){
-        this.nav.setRoot('menu-page');
-      }else{
-        this.showError('Incorrect email or password');
-      }
-    },
-      error => {
-        this.showError(error);
-      });
+
+  alert(message: string) {
+    this.alertCtrl.create({
+      title: 'Info!',
+      subTitle: message,
+      buttons: ['OK']
+    }).present();
   }
 
-  showLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
-      dismissOnPageChange: true
-    });
-    this.loading.present();
+
+  login() {
+    this.fireAuth.auth.signInWithEmailAndPassword(this.email.value, this.password.value)
+    .then( data => {
+
+      this.nav.setRoot( 'menu-page' );
+    })
+    .catch( error => {
+      console.log('Error: ', error);
+      this.alert(error.message);
+    })
+    // Sets login user
+    this.firebase.loginUser = String(this.email.value);
   }
+
+
 
   showError(text) {
-    this.loading.dismiss();
-
     let alert = this.alertCtrl.create({
       title: 'Error',
       subTitle: text,
@@ -54,6 +59,7 @@ export class LoginPage {
     });
     alert.present(prompt);
   }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');

@@ -10,6 +10,7 @@
   <ion-row class="logo-row">
     <ion-col></ion-col>
     <ion-col width-67>
+      <!-- Placeholder image from earlier labwork -->
       <!-- <img src="http://placehold.it/300x200"/> -->
     </ion-col>
     <ion-col></ion-col>
@@ -21,11 +22,11 @@
           <ion-list inset>
 
             <ion-item>
-              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+              <ion-input type="text" placeholder="Email" #email></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+              <ion-input type="password" placeholder="Password" #password></ion-input>
             </ion-item>
 
           </ion-list>
@@ -34,9 +35,8 @@
 
       <ion-row>
         <ion-col class="signup-col">
-          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login</button>
-          <!-- <button ion-button class="register-btn" block clear (click)="createAccount()">Create New Account</button> -->
-          <!-- Registering is not in use in this app.  -->
+          <button ion-button class="submit-btn" full (click)="login()">Login</button>
+          <button ion-button class="register-btn" block clear (click)="createAccount()">Create New Account</button>
         </ion-col>
       </ion-row>
 

@@ -1,13 +1,14 @@
-//Css variables from Labwork 4
+//Css variables from Labwork 4 with small changes
 
 page-register {
   .login-content {
-    background: #56CA96;
+    background: #35ddff;
 
     .login-box {
-      background: #509287;
+      background: #34a0ff;
       padding: 20px 20px 0px 20px;
       margin-top: 30px;
+      border-radius: 15px;
     }
 
     ion-row {
@@ -36,9 +37,9 @@ page-register {
      }
 
      .submit-btn {
-       background: #51CFB1;
+       background: #0019fc;
        border-radius: 30px !important;
-       border: 1px solid #ffffff;
+       border: 2px solid #ffffff;
      }
   }
 }

@@ -1,6 +1,5 @@
-<!-- Juuso Heinonen 1600400
-    Registering is not in use in this app
-    Register page and related files are not deleted if I want to implement it later or they are needed in another project -->
+<!-- Juuso Heinonen 1600400 -->
+
 
 <ion-header>
   <ion-navbar color="dark">
@@ -17,11 +16,11 @@
           <ion-list inset>
 
             <ion-item>
-              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+              <ion-input type="text" placeholder="Email" #email required></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+              <ion-input type="password" placeholder="Password" #password required></ion-input>
             </ion-item>
 
           </ion-list>

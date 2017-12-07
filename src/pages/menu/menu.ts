@@ -23,12 +23,13 @@ export class MenuPage {
 
   @ViewChild(Nav) nav: Nav;
 
+  //list of pages on side menu
   pages: pageInterface[] = [
     {title: 'About me', pageName: 'tabs-page', tabComponent: 'HomePage', index: 0, icon: 'home'},
     {title: 'Contact', pageName: 'tabs-page', tabComponent: 'AboutPage', index: 1, icon: 'contact'},
     {title: 'CV', pageName: 'cv-page', tabComponent: 'CvPage', index: 2, icon: 'paper'},
     {title: 'Extra Curriculum', pageName: 'extra-page', tabComponent: 'ExtraCurriculumPage', index: 3, icon: 'person'}
-  ] //list of pages on side menu
+  ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }

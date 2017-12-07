@@ -3,6 +3,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, App } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { FirebaseProvider } from './../../providers/firebase/firebase';
+import { AngularFireAuth } from 'angularfire2/auth';
+import firebase from 'firebase'
 
 
 @IonicPage({name: 'about-page'})
@@ -12,13 +15,22 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 })
 export class AboutPage {
 
-  constructor(public nav: NavController, public navParams: NavParams, private auth: AuthServiceProvider, public app: App) {
+  constructor(private nav: NavController, private auth: AuthServiceProvider, private app: App, public firebase: FirebaseProvider) {
 
+    // Check is user is logged in, if not redirect to login page
+    if (firebase.loginUser == " "){
+      this.nav.setRoot('login-page');
+      }
   }
 
+  // Logout function sets the current user to an empty string
+  // It also reloads the app to force the user to the login page
   public logout() {
-    this.auth.logout().subscribe(succ => {
-      this.app.getRootNav().setRoot('login-page') //hide tabs after logout
+    firebase.auth().signOut().then(() => {
+      this.firebase.loginUser = " ";
+      document.location.href = 'index.html';
+    }, function(error) {
+      console.log("Error!")
     });
   }
 
